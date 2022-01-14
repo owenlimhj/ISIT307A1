@@ -1,0 +1,5 @@
+levian,98573655,levianlxe187@gmail.com,aaa-5555-90,oi,1800,1=oo,a
+levian,98573655,levianlxe187@gmail.com,ccc-6666-00,a,1800,aa,is
+Dominic Loh,96443252,dominic.loh@hotmail.com,aaa-1000-80,yamaha,1980,Well built,New
+Dominic Loh,96443252,dominic.loh@hotmail.com,lll-1111-89,Sonic,1989,Active movement,Brand new in box
+Dominic Loh,96443252,dominic.loh@hotmail.com,aaa-5555-99,yamaha,1999,Well built,New
