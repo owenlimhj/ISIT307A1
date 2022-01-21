@@ -3,12 +3,15 @@
 <head>
 	<title>ISIT307 Assignment 1</title>
     <style>
+		body {
+    		background: #B0E0E6;
+  		}
     	.home-page {
     		width: 400px;
     		margin: 50px auto;
   			font-size: 15px;
 			margin-bottom: 15px;
-    		background: #f7f7f7;
+    		background: #FFFFFF;
     		box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     		padding: 30px;
 			border-radius: 8px;
@@ -16,6 +19,8 @@
 		.home-page h1 {
 			text-align: center;
     		margin: 0 0 15px;
+			color:#329EAA; 
+			font-family:verdana;
 		}
 		.btn {
 			display: block;
@@ -42,7 +47,7 @@
 </head>
 <body>
 <div class="home-page">
-	<h1 class="text-center" style="color:#329EAA; font-family:verdana;">Shoes Fever</h1>
+	<h1 class="text-center">Shoes Fever</h1>
 	<p><img src="logo.png" alt="logo"></p> <br>	
 	<a href="Sell_Shoes_Page.php"><button class="btn">Sell Shoes</button></a><br><br>
 	<a href="Buy_Shoes_Page.php"><button class="btn">Buy Shoes</button></a></p>
