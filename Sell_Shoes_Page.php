@@ -192,20 +192,27 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   }
 
   //if there is no errors,try to read existing data
+  //if file is not created, create the file
+  $prodnumarray = [];
+  $row = 0;
+  $read = false;
   if(!$error) 
   {
+    echo '<script type="text/javascript">alert("No error");</script>';
     //preparation to read file
     //create a list delimited with ,
     $list = $name . "," . $phone . "," . $email . "," . $prodnum . "," . $type . "," . $brand . "," . $char . "," . $condition . "," . $description . "\n";
-    //create fields to be written
-    $fields = array("name", "phone", "email", "prodnum", "type", "brand", "char", "condition", "description");
-
-    //read the existing data
-    $prodnumarray = [];
-    $row = 0;
     
-    if(($text = fopen("ShoesSale.txt", "r")) !== false)
+    if(($file = fopen("ShoesSale.txt", "w")) == false)
     {
+      $file = fopen("ShoesSale.txt", "w");
+      fclose($file);
+      $read = true; //since it is empty, reading is completed
+      echo '<script type="text/javascript">alert("ShoesSale.txt created");</script>';
+    }
+    else
+    {
+      $text = fopen("ShoesSale.txt", "r");
       //d = data
       while (($d = fgetcsv($text, 1000, ",")) !==false) 
       {
@@ -214,28 +221,34 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
         $row++;
       }
       fclose($text);
+      $read = true;
+      echo '<script type="text/javascript">alert("ShoesSale.txt reading completed");</script>';
+    }
+  }
 
-      //check if product number is taken
-      $taken = false;
-      for ($i=0; $i < $row; $i++) 
+  //if reading is done, check if product number is unique
+  if($read == true)
+  {
+    echo '<script type="text/javascript">alert("Checking product num");</script>';
+    $taken = false;
+    for ($i=0; $i < $row; $i++) 
+    {
+      if($prodnumarray[$i]==$prodnum) 
       {
-        if ($prodnumarray[$i]==$prodnum) 
-        {
-          $taken = true; 
-        }
-        if ($taken) 
-        {
-          $prodnumerr = "Product number is taken";
-        }
-        else 
-        {
-          //write to file if it is unique
-          $listfile = fopen("ShoesSale.txt", "a") or die("Unable to open file.");
-          fwrite($listfile, $list);
-          fclose($listfile);
-          echo '<script type="text/javascript">alert("Successfully listed!");</script>';
-        }
+        $taken = true; 
       }
+    }
+    if($taken==true) 
+    {
+      $prodnumerr = "Product number is taken";
+    }
+    else 
+    {
+      //write to file if it is unique
+      $listfile = fopen("ShoesSale.txt", "a") or die("Unable to open file.");
+      fwrite($listfile, $list);
+      fclose($listfile);
+      echo '<script type="text/javascript">alert("Successfully listed!");</script>';
     }
   }
 }
