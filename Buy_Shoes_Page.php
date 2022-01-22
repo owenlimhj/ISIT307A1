@@ -120,6 +120,7 @@ if(file_exists("ShoesSale.txt"))
     //the array is empty
     echo "<label>" . "There are no shoes on sale yet." . "</label>";
   }
+  fclose($text);
 }
 else
 {

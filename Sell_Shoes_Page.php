@@ -58,6 +58,7 @@
 <body>
 
 <?php
+error_reporting(0);
 
 $nameerr = $phoneerr = $emailerr = "";
 $prodnumerr = $typeerr = $branderr = "";
@@ -196,63 +197,67 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   $prodnumarray = [];
   $row = 0;
   $read = false;
+
   if(!$error) 
   {
-    echo '<script type="text/javascript">alert("No error");</script>';
     //preparation to read file
     //create a list delimited with ,
     $list = $name . "," . $phone . "," . $email . "," . $prodnum . "," . $type . "," . $brand . "," . $char . "," . $condition . "," . $description . "\n";
     
-    if(($file = fopen("ShoesSale.txt", "w")) == false)
+    $sname = $sphone = $semail = "";
+    $sprodnum = $stype = $sbrand = "";
+    $schar = $scondition = $sdescription = "";
+    
+    //if file is not created, create the file
+    if(!file_exists("ShoesSale.txt"))
     {
       $file = fopen("ShoesSale.txt", "w");
       fclose($file);
       $read = true; //since it is empty, reading is completed
-      echo '<script type="text/javascript">alert("ShoesSale.txt created");</script>';
     }
-    else
+    else //if there is no errors,try to read existing data
     {
-      $text = fopen("ShoesSale.txt", "r");
-      //d = data
-      while (($d = fgetcsv($text, 1000, ",")) !==false) 
+      $text = fopen("ShoesSale.txt","r");
+      while(!feof($text)) 
       {
-        $num = count($d);
-        $prodnumarray[$row] = $d[3];
+        $line = fgets($text);
+        list($sname, $sphone, $semail, $sprodnum, $stype, $sbrand, $schar, $scondition, $sdescription) = explode(",", $line);
+        $prodnumarray[$row] = $sprodnum;
         $row++;
       }
       fclose($text);
-      $read = true;
-      echo '<script type="text/javascript">alert("ShoesSale.txt reading completed");</script>';
+      $read = true; 
+      echo '<script type="text/javascript">alert("reading is completed");</script>';
     }
-  }
-
-  //if reading is done, check if product number is unique
-  if($read == true)
-  {
-    echo '<script type="text/javascript">alert("Checking product num");</script>';
-    $taken = false;
-    for ($i=0; $i < $row; $i++) 
+    
+    //if reading is done, check if product number is unique
+    if($read == true)
     {
-      if($prodnumarray[$i]==$prodnum) 
+      echo '<script type="text/javascript">alert("Checking product num");</script>';
+      $taken = false;
+      for ($i=0; $i < $row; $i++) 
       {
-        $taken = true; 
+        if($prodnumarray[$i]==$prodnum) 
+        {
+          $taken = true; 
+        }
       }
-    }
-    if($taken==true) 
-    {
-      $prodnumerr = "Product number is taken";
-    }
-    else 
-    {
-      //write to file if it is unique
-      $listfile = fopen("ShoesSale.txt", "a") or die("Unable to open file.");
-      fwrite($listfile, $list);
-      fclose($listfile);
-      echo '<script type="text/javascript">alert("Successfully listed!");</script>';
+      if($taken==true) 
+      {
+        $prodnumerr = "Product number is taken";
+        echo '<script type="text/javascript">alert("Product number is taken, please enter again");</script>';
+      }
+      else 
+      {
+        //write to file if it is unique
+        $listfile = fopen("ShoesSale.txt", "a") or die("Unable to open file.");
+        fwrite($listfile, $list);
+        fclose($listfile);
+        echo '<script type="text/javascript">alert("Successfully listed!");</script>';
+      }
     }
   }
 }
-
 function test_input($data) 
 {
   $data = trim($data);
