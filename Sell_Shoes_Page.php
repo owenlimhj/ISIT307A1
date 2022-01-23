@@ -67,7 +67,6 @@ $charerr = $conditionerr = $descriptionerr = "";
 $name = $phone = $email = "";
 $prodnum = $type = $brand = "";
 $char = $condition = $description = "";
-$interest = 0;
 
 $phoneregex = "/^(^[689]{1})(\d{7})$/"; //using SG local number format
 $emailregex = "/^[^0-9][_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/";
@@ -120,22 +119,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   else 
   {
     $email = test_input($_POST["email"]);
-    $error= false;
-  }
-  //product number
-  if (empty($_POST["prodnum"])) 
-  {
-    $prodnumerr="Product ID cannot be blank.";
-    $error= true;
-  } 
-  elseif (!preg_match($prodnumregex, $_POST["prodnum"])) 
-  {
-    $prodnumerr="Enter a valid product number.";
-    $error= true;
-  } 
-  else 
-  {
-    $prodnum=test_input($_POST["prodnum"]);
     $error= false;
   }
   //type
@@ -192,6 +175,22 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     $description = test_input($_POST["description"]);
     $error= false;
   }
+  //product number
+  if (empty($_POST["prodnum"])) 
+  {
+    $prodnumerr="Product ID cannot be blank.";
+    $error= true;
+  } 
+  elseif (!preg_match($prodnumregex, $_POST["prodnum"])) 
+  {
+    $prodnumerr="Enter a valid product number.";
+    $error= true;
+  } 
+  else 
+  {
+    $prodnum=test_input($_POST["prodnum"]);
+    $error= false;
+  }
 
   //if there is no errors,try to read existing data
   //if file is not created, create the file
@@ -204,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     echo '<script type="text/javascript">alert("No error");</script>';
     //preparation to read file
     //create a list delimited with ,
-    $list = $name . "," . $phone . "," . $email . "," . $prodnum . "," . $type . "," . $brand . "," . $char . "," . $condition . "," . $description . "," . $interest ."\n";
+    $list = $name . "," . $phone . "," . $email . "," . $prodnum . "," . $type . "," . $brand . "," . $char . "," . $condition . "," . $description . "\n";
 
     if(!file_exists("ShoesSale.txt"))
     {
@@ -228,34 +227,37 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
       echo '<script type="text/javascript">alert("ShoesSale.txt reading completed");</script>';
     }
   }
-
+  else
+  {
+    echo '<script type="text/javascript">alert("There are errors in your input format, please enter again.");</script>';
+  }
 
   //if reading is done, check if product number is unique
   if($read == true)
-   {
+  {
     echo '<script type="text/javascript">alert("Checking product num");</script>';
-      $taken = false;
-      for ($i=0; $i < $row; $i++) 
+    $taken = false;
+    for ($i=0; $i < $row; $i++) 
+    {
+      if($prodnumarray[$i]==$prodnum) 
       {
-        if($prodnumarray[$i]==$prodnum) 
-        {
-          $taken = true; 
-        }
+        $taken = true; 
       }
-      if($taken==true) 
-      {
-        $prodnumerr = "Product number is taken";
-        echo '<script type="text/javascript">alert("Product number is taken, please enter again");</script>';
-      }
-      else 
-      {
-        //write to file if it is unique
-        $listfile = fopen("ShoesSale.txt", "a") or die("Unable to open file.");
-        fwrite($listfile, $list);
-        fclose($listfile);
-        echo '<script type="text/javascript">alert("Successfully listed!");</script>';
-      }
-   }
+    }
+    if($taken==true) 
+    {
+      $prodnumerr = "Product number is taken";
+      echo '<script type="text/javascript">alert("Product number is taken, please enter again");</script>';
+    }
+    else 
+    {
+      //write to file if it is unique
+      $listfile = fopen("ShoesSale.txt", "a") or die("Unable to open file.");
+      fwrite($listfile, $list);
+      fclose($listfile);
+      echo '<script type="text/javascript">alert("Successfully listed!");</script>';
+    }
+  }
 }
 function test_input($data) 
 {
