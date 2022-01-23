@@ -200,24 +200,21 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
 
   if(!$error) 
   {
+    echo '<script type="text/javascript">alert("No error");</script>';
     //preparation to read file
     //create a list delimited with ,
     $list = $name . "," . $phone . "," . $email . "," . $prodnum . "," . $type . "," . $brand . "," . $char . "," . $condition . "," . $description . "\n";
-    
-    $sname = $sphone = $semail = "";
-    $sprodnum = $stype = $sbrand = "";
-    $schar = $scondition = $sdescription = "";
-    
-    //if file is not created, create the file
+
     if(!file_exists("ShoesSale.txt"))
     {
       $file = fopen("ShoesSale.txt", "w");
       fclose($file);
       $read = true; //since it is empty, reading is completed
+      echo '<script type="text/javascript">alert("ShoesSale.txt created");</script>';
     }
-    else //if there is no errors,try to read existing data
+    else
     {
-      $text = fopen("ShoesSale.txt","r");
+      $text = fopen("ShoesSale.txt", "r");
       while(!feof($text)) 
       {
         $line = fgets($text);
@@ -226,14 +223,16 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
         $row++;
       }
       fclose($text);
-      $read = true; 
-      echo '<script type="text/javascript">alert("reading is completed");</script>';
+      $read = true;
+      echo '<script type="text/javascript">alert("ShoesSale.txt reading completed");</script>';
     }
-    
-    //if reading is done, check if product number is unique
-    if($read == true)
-    {
-      echo '<script type="text/javascript">alert("Checking product num");</script>';
+  }
+
+
+  //if reading is done, check if product number is unique
+  if($read == true)
+   {
+    echo '<script type="text/javascript">alert("Checking product num");</script>';
       $taken = false;
       for ($i=0; $i < $row; $i++) 
       {
@@ -255,8 +254,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
         fclose($listfile);
         echo '<script type="text/javascript">alert("Successfully listed!");</script>';
       }
-    }
-  }
+   }
 }
 function test_input($data) 
 {
