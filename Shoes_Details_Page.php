@@ -58,31 +58,26 @@
 <body>
 
 <?php
-  session_start();
 
+session_start();
 $prodnum = $_SESSION['ProductNum'];
-$Details = file_get_contents("ShoesSale.txt");
-$DetailsArray = explode(',', $Details);
-  //readfile($Dir . "/" .$FileName);
 
-  echo $Details;
-  echo "<hr />\n";
-
-
-
-
-$type = $DetailsArray[4];
-$brand = $DetailsArray[5];
-$char = $DetailsArray[6];
-$condition = $DetailsArray[7];
-$description = $DetailsArray[8];
-
-
-//when user press on submit
-if ($_SERVER['REQUEST_METHOD']=='POST') {
-  
+if($file = fopen("ShoesSale.txt", "r")){
+  while(!feof($file)) {
+    $line = fgets($file);
+    if(strpos($line, $_SESSION['ProductNum']) == true){
+      $DetailsArray = explode(',', $line);
+      $type = $DetailsArray[4];
+      $brand = $DetailsArray[5];
+      $char = $DetailsArray[6];
+      $condition = $DetailsArray[7];
+      $description = $DetailsArray[8];
+      $interest = $DetailsArray[9];
+    }
+    //echo "<br>";
 }
-
+fclose($file);
+}
 
 ?>
 <br>
@@ -111,6 +106,11 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
 <input type="text" id="Condition" name="condition" value='<?php echo $condition; ?>'readonly><br><br>
 <label>Description: </label>
 <input type="text" id="Description" name="description" value='<?php echo $description; ?>'readonly><br><br>
+
+<h2>Product details</h2>
+<hr><br>
+<label>Number of Interest: </label>
+<input type="text" id="interest" name="interest" value='<?php echo $interest; ?>'readonly><br><br>
 <button type="submit" value="ExpressInterest">Express Interest</button>
 </div>
 </form> 
@@ -118,4 +118,3 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
 <a href="Home_Page.php"><button style="display:block; margin-left:auto; margin-right: auto;">Return to Home Page</button></a>
 </body>
 </html>
-

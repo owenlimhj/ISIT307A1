@@ -81,9 +81,9 @@
 $name = $phone = $email = "";
 $prodnum = $type = $brand = "";
 $char = $condition = $description = "";
+$prodNumerr = "";
 
-session_start();
-
+$error= false; //to check through errors
 
 if(file_exists("ShoesSale.txt"))
 {
@@ -107,7 +107,7 @@ if(file_exists("ShoesSale.txt"))
 
         echo "<tr>";
         echo "<td>$prodnum</td>";
-        $_SESSION['ProductNum'] = $prodnum;
+
         echo "<td>$type</td>";
         echo "<td>$brand</td>";
         echo "</tr>";
@@ -120,7 +120,7 @@ if(file_exists("ShoesSale.txt"))
     //the array is empty
     echo "<label>" . "There are no shoes on sale yet." . "</label>";
   }
-  fclose($text);
+  //fclose($text);
 }
 else
 {
@@ -131,10 +131,41 @@ else
 <br><br>
 <!--search value from this form will be submitted to Details Page-->
 <!--Pressing submit brings you to the Details Page-->
-<form id="BuyShoesPage" method="POST" action="Shoes_Details_Page.php">
-<label>&nbsp;Enter Product Number to search: </label><br><br>
-<input type="text" id="search" placeholder="Search.."><br><br>
+<form id="BuyShoesPage" method="POST">
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  session_start();
+  $_SESSION['ProductNum'] = $_POST['searchNum'];
+  if (empty($_POST["searchNum"])) 
+  {
+    $prodNumerr = "Product Number cannot be blank";
+    $error= true;
+  } 
+  else{
+  if($file = fopen("ShoesSale.txt", "r")){
+    while(!feof($file)) {
+      $line = fgets($file);
+      if(strpos($line, $_SESSION['ProductNum']) == true){
+        header("Location: Shoes_Details_Page.php");
+      }
+      else{
+        $prodNumerr = "Invalid Product Number";
+        $error = true;
+      }
+      //echo "<br>";
+  }
+}
+  }
+
+
+} 
+?>
+
+<label>&nbsp;Enter Product Number to search: </label><span class="error"><?php echo $prodNumerr;?><br><br>
+<input type="text" id="search" name="searchNum" placeholder="Search.."><br><br>
 <button type="submit" value="Submit">Submit</button>
+
 </form> 
 
 </div>
