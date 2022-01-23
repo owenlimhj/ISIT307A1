@@ -136,31 +136,39 @@ else
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   session_start();
-  $_SESSION['ProductNum'] = $_POST['searchNum'];
   if (empty($_POST["searchNum"])) 
   {
     $prodNumerr = "Product Number cannot be blank";
     $error= true;
   } 
   else{
-  if($file = fopen("ShoesSale.txt", "r")){
-    while(!feof($file)) {
-      $line = fgets($file);
-      if(strpos($line, $_SESSION['ProductNum']) == true){
-        header("Location: Shoes_Details_Page.php");
-      }
-      else{
-        $prodNumerr = "Invalid Product Number";
-        $error = true;
-      }
-      //echo "<br>";
+    if($file = fopen("ShoesSale.txt", "r")){
+          while(!feof($file)) {
+            $line = fgets($file);
+            $DetailsArray = explode(',', $line);
+            if(isset($line)){
+            if(!isset($DetailsArray[3])){
+              $prodNumerr = "Invalid Product Number";
+            }
+            else if(strcmp($DetailsArray[3], $_POST['searchNum']) == 0){
+              $_SESSION['ProductNum'] = $_POST['searchNum'];
+              header("Location: Shoes_Details_Page.php");
+            }
+            else{
+                      $prodNumerr = "Invalid Product Number";
+                      $error = true;
+                    }
+                    //echo "<br>";
+                }
+               
+    }
+    fclose($file);
   }
-}
   }
-
 
 } 
 ?>
+
 
 <label>&nbsp;Enter Product Number to search: </label><span class="error"><?php echo $prodNumerr;?><br><br>
 <input type="text" id="search" name="searchNum" placeholder="Search.."><br><br>

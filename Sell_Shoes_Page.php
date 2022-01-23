@@ -67,6 +67,7 @@ $charerr = $conditionerr = $descriptionerr = "";
 $name = $phone = $email = "";
 $prodnum = $type = $brand = "";
 $char = $condition = $description = "";
+$interest = 0;
 
 $phoneregex = "/^(^[689]{1})(\d{7})$/"; //using SG local number format
 $emailregex = "/^[^0-9][_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/";
@@ -203,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     echo '<script type="text/javascript">alert("No error");</script>';
     //preparation to read file
     //create a list delimited with ,
-    $list = $name . "," . $phone . "," . $email . "," . $prodnum . "," . $type . "," . $brand . "," . $char . "," . $condition . "," . $description . "\n";
+    $list = $name . "," . $phone . "," . $email . "," . $prodnum . "," . $type . "," . $brand . "," . $char . "," . $condition . "," . $description . "," . $interest . "\n";
 
     if(!file_exists("ShoesSale.txt"))
     {

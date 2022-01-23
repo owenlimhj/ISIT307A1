@@ -69,7 +69,7 @@
   $emailregex = "/^[^0-9][_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/";
 
   $error = false; //to check through errors
-
+  
   //when user press on submit
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //do checking for each variable
@@ -108,7 +108,12 @@
     if (empty($_POST["price"])) {
       $priceerr = "Price cannot be blank";
       $error = true;
-    } else {
+    } 
+    else if (!is_numeric($_POST["price"])) {
+      $priceerr = "Price must be number";
+      $error = true;
+    } 
+    else {
       $price = test_input($_POST["price"]);
       $error = false;
     }
@@ -117,8 +122,6 @@
 
     //if there is no errors,try to read existing data
     //if file is not created, create the file
-    $prodnumarray = [];
-    $row = 0;
     $read = false;
     if (!$error) {
 
@@ -140,19 +143,37 @@
       }
 
       $contents = file_get_contents("ShoesSale.txt");
+      $contents = preg_replace('/^\h*\v+/m', '', $contents);
       $contents_array = preg_split("/\\r\\n|\\r|\\n/", $contents);
       $new_contents = "";
+      echo count($contents_array);
       foreach ($contents_array as &$line) {    // for each line
-        if (strpos($line, $_SESSION["ProductNum"]) !== false) {
-          $DetailsArray = explode(',', $line);
-          $interest = $DetailsArray[9] + 1;
-          $newLine = str_replace($DetailsArray[9], $interest, $line);
-          $new_contents .= $newLine;
-          echo $newLine;
-        } else {
-          $new_contents .= $line . "\n";
+        if(isset($line)){
+          if (strpos($line, $_SESSION["ProductNum"]) == true) {
+            $DetailsArray = explode(',', $line);
+            $interest = $DetailsArray[9] + 1;
+            $name = $DetailsArray[0];
+            $phone = $DetailsArray[1];
+            $email = $DetailsArray[2];
+            $prodNum = $DetailsArray[3];
+            $type = $DetailsArray[4];
+            $brand = $DetailsArray[5];
+            $char = $DetailsArray[6];
+            $condition = $DetailsArray[7];
+            $description = $DetailsArray[8];
+            $interest = $DetailsArray[9] + 1;
+            $new_line = $DetailsArray[0] . "," . $DetailsArray[1] . "," .   $DetailsArray[2] . "," .   $DetailsArray[3] . "," .   $DetailsArray[4] . "," .   $DetailsArray[5] . "," .  $DetailsArray[6] . "," .  $DetailsArray[7] . "," .   $DetailsArray[8] . "," .   $interest . "\n";
+            $new_contents .= $new_line;         
+            } 
+            else {
+            $new_contents .= $line . "\n";
+          }
         }
       }
+      
+     // file_put_contents("ShoesSale.txt", $new_contents);
+     // $str=file_get_contents("ShoesSale.txt");
+      $new_contents = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $new_contents);
       file_put_contents("ShoesSale.txt", $new_contents);
     }
   }
