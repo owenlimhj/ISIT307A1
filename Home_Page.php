@@ -43,6 +43,9 @@
     		width: auto;
     		height: auto;
 		}
+		a:visited{
+    color: inherit;
+    }
     </style>
 </head>
 <body>

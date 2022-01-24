@@ -51,6 +51,10 @@
       display: inline-block;
       font-size: 16px;
     }
+    a:visited{
+    color: inherit;
+    }
+    
 
     .error {
       color: red;
@@ -209,7 +213,7 @@
     </div>
   </form>
 
-  <a href="Home_Page.php"><button style="display:block; margin-left:auto; margin-right: auto;">Return to Home Page</button></a>
+  <button style="display:block; margin-left:auto; margin-right: auto;"><a  href="Home_Page.php">Return to Home Page</a></button>
 </body>
 
 </html>
