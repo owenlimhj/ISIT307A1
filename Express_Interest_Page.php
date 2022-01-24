@@ -136,7 +136,7 @@
         $listfile = fopen("ExpInterest.txt", "a") or die("Unable to open file.");
         fwrite($listfile, $list);
         fclose($listfile);
-        echo '<script type="text/javascript">alert("Successfully listed!");</script>';
+        echo '<script type="text/javascript">alert("We have taken note of your interest, THANK YOU!");</script>';
       }
 
       $contents = file_get_contents("ShoesSale.txt");
