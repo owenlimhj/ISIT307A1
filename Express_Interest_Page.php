@@ -68,54 +68,51 @@
   $phoneregex = "/^(^[689]{1})(\d{7})$/"; //using SG local number format
   $emailregex = "/^[^0-9][_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/";
 
-  $error = false; //to check through errors
-  
+  $error = []; //to check through errors
+
   //when user press on submit
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //do checking for each variable
     //name
     if (empty($_POST["name"])) {
       $nameerr = "Name cannot be blank";
-      $error = true;
+      $error[0] = true;
     } else {
       $name = test_input($_POST["name"]);
-      $error = false;
+      $error[0] = false;
     }
     //phone
     if (empty($_POST["phone"])) {
       $phoneerr = "Phone number cannot be blank";
-      $error = true;
+      $error[1] = true;
     } elseif (!preg_match($phoneregex, $_POST["phone"])) {
       $phoneerr = "Enter a valid phone number.";
-      $error = true;
+      $error[1] = true;
     } else {
       $phone = test_input($_POST["phone"]);
-      $error = false;
+      $error[1] = false;
     }
     //email
     if (empty($_POST["email"])) {
       $emailerr = "Email cannot be blank";
-      $error = true;
+      $error[2] = true;
     } elseif (!preg_match($emailregex, $_POST["email"])) {
       $emailerr = "Enter a valid email address.";
-      $error = true;
+      $error[2] = true;
     } else {
       $email = test_input($_POST["email"]);
-      $error = false;
+      $error[2] = false;
     }
 
-    //brand
     if (empty($_POST["price"])) {
       $priceerr = "Price cannot be blank";
-      $error = true;
-    } 
-    else if (!is_numeric($_POST["price"])) {
+      $error[3] = true;
+    } else if (!is_numeric($_POST["price"])) {
       $priceerr = "Price must be number";
-      $error = true;
-    } 
-    else {
+      $error[3] = true;
+    } else {
       $price = test_input($_POST["price"]);
-      $error = false;
+      $error[3] = false;
     }
 
 
@@ -123,7 +120,7 @@
     //if there is no errors,try to read existing data
     //if file is not created, create the file
     $read = false;
-    if (!$error) {
+    if ($error[0] == false && count(array_unique($error)) == 1) {
 
       echo '<script type="text/javascript">alert("No error");</script>';
       //preparation to read file
@@ -148,7 +145,7 @@
       $new_contents = "";
       echo count($contents_array);
       foreach ($contents_array as &$line) {    // for each line
-        if(isset($line)){
+        if (isset($line)) {
           if (strpos($line, $_SESSION["ProductNum"]) == true) {
             $DetailsArray = explode(',', $line);
             $interest = $DetailsArray[9] + 1;
@@ -163,16 +160,13 @@
             $description = $DetailsArray[8];
             $interest = $DetailsArray[9] + 1;
             $new_line = $DetailsArray[0] . "," . $DetailsArray[1] . "," .   $DetailsArray[2] . "," .   $DetailsArray[3] . "," .   $DetailsArray[4] . "," .   $DetailsArray[5] . "," .  $DetailsArray[6] . "," .  $DetailsArray[7] . "," .   $DetailsArray[8] . "," .   $interest . "\n";
-            $new_contents .= $new_line;         
-            } 
-            else {
+            $new_contents .= $new_line;
+          } else {
             $new_contents .= $line . "\n";
           }
         }
       }
-      
-     // file_put_contents("ShoesSale.txt", $new_contents);
-     // $str=file_get_contents("ShoesSale.txt");
+
       $new_contents = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $new_contents);
       file_put_contents("ShoesSale.txt", $new_contents);
     }
