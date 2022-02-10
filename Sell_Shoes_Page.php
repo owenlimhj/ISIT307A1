@@ -25,7 +25,7 @@
       color: white;
       font-family: verdana;
     }
-
+    
     label {
       padding: 12px 12px 12px 0;
       display: inline-block;
