@@ -14,8 +14,8 @@
 	<form action="Subject_Page.php" method="post" autocomplete="off">
 		<label style="font-weight: bold;">
 			Student Number:
-			<input type="text" name="studentnum" class="input-field">
-			<input class="submit" type="submit" value="Start">
+			<input type="number" name="studentnum" class="input-field">
+			<input class="smallbluebtn" type="submit" value="Start">
 		</label>
 	</form>
 </div>

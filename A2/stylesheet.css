@@ -46,7 +46,7 @@ label {
 	  margin: 0px 0px 15px 0px;
     font-family:verdana;
 }
-.submit {
+.smallbluebtn {
     font-weight: bold;
     background-color: #329EAA;
     color:white;
@@ -77,10 +77,17 @@ label {
     color:white;
     border-radius: 8px;
     border: none;
-      width: 75%;
+    width: 75%;
     padding: 14px 28px;
-      text-align: center;
+    text-align: center;
 }
-a:visited{
-color: inherit;
+button {
+    background-color: #329EAA;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
 }
