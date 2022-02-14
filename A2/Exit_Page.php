@@ -26,8 +26,8 @@
 			echo "<h3>You attempted $hAtt History Tests</h3>";
 			echo "<h3>You attempted $mAtt Math Tests</h3>";
 			echo "<h3>You attempted a total of $totalAttempt Tests</h3>";
-			echo "<h3>You have total of $totalCorrect correct answers</h3>";
-			echo "<h3>You have total of $totalWrong wrong answers</h3>";
+			echo "<h4>You have total of $totalCorrect correct answers</h4>";
+			echo "<h4>You have total of $totalWrong wrong answers</h4>";
 			echo "<h1>Your overall score is $overallScore/$totalScore</h1>";
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				session_unset();
