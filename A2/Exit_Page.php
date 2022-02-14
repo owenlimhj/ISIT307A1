@@ -17,6 +17,8 @@
 			$overallScore = $_SESSION['OverallScore'];
 			$hAtt = $_SESSION['HisAttempt'];
 			$mAtt = $_SESSION['MathAttempt'];
+			$totalCorrect = $_SESSION['TotalCorrect'];
+			$totalWrong = $_SESSION['TotalWrong'];
 			$_SESSION['OverallScore'] = $overallScore;
 			$totalAttempt = $hAtt + $mAtt;
 			$totalScore = $totalAttempt * 6;
@@ -24,6 +26,8 @@
 			echo "<h3>You attempted $hAtt History Tests</h3>";
 			echo "<h3>You attempted $mAtt Math Tests</h3>";
 			echo "<h3>You attempted a total of $totalAttempt Tests</h3>";
+			echo "<h3>You have total of $totalCorrect correct answers</h3>";
+			echo "<h3>You have total of $totalWrong wrong answers</h3>";
 			echo "<h1>Your overall score is $overallScore/$totalScore</h1>";
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				session_unset();

@@ -57,6 +57,8 @@
 				$_SESSION['Wrong'] = $wrong;
 				$_SESSION['MathAttempt'] += 1;
 				$_SESSION['Attempted'] = "Math";
+				$_SESSION['TotalCorrect'] += $correct;
+				$_SESSION['TotalWrong'] += $wrong;
 				$_SESSION['OverallScore'] += $showpoints;
 				header("Location: Result_Page.php");
 			}

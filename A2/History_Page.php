@@ -64,6 +64,8 @@
 					$_SESSION['Wrong'] = $wrong;
 					$_SESSION['HisAttempt'] += 1;
 					$_SESSION['Attempted'] = "History";
+					$_SESSION['TotalCorrect'] += $correct;
+					$_SESSION['TotalWrong'] += $wrong;
 					$_SESSION['OverallScore'] += $showpoints;
 					header("Location: Result_Page.php");
 				}
