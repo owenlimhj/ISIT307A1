@@ -46,33 +46,36 @@
 			<?php
 
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				if (isset($_POST['submit'])) {
+					$Answer = $_POST['ans'];
+					foreach ($Answer as $Questions => $Response) {
+						$Response = stripslashes($Response);
 
-				$Answer = $_POST['ans'];
-				foreach ($Answer as $Questions => $Response) {
-					$Response = stripslashes($Response);
-
-					if (strcasecmp($HistoryQuestions[$Questions]["Ans"], $Response) == 0) {
-						$correct++;
-						$wrong--;
+						if (strcasecmp($HistoryQuestions[$Questions]["Ans"], $Response) == 0) {
+							$correct++;
+							$wrong--;
+						}
 					}
-				}
 
-				//points for current attempt
-				$showpoints = calculatepoints($correct, $wrong);
-				$_SESSION['currentScore'] = $showpoints;
-				$_SESSION['Correct'] = $correct;
-				$_SESSION['Wrong'] = $wrong;
-				$_SESSION['HisAttempt'] += 1;
-				$_SESSION['Attempted'] = "History";
-				$_SESSION['OverallScore'] += $showpoints;
-				header("Location: Result_Page.php");
+					//points for current attempt
+					$showpoints = calculatepoints($correct, $wrong);
+					$_SESSION['currentScore'] = $showpoints;
+					$_SESSION['Correct'] = $correct;
+					$_SESSION['Wrong'] = $wrong;
+					$_SESSION['HisAttempt'] += 1;
+					$_SESSION['Attempted'] = "History";
+					$_SESSION['OverallScore'] += $showpoints;
+					header("Location: Result_Page.php");
+				}
+				if (isset($_POST['back'])) {
+					header("Location: Subject_Page.php");
+				}
 			}
 			?>
 			<label>Please select the correct answer</label><br>
 
 			<?php
 
-			$counter = 1;
 			for ($i = 0; $i < 3; $i++) {
 				echo "<label class='question-text'>$counter. ";
 				$key = $RandomKey[$i];
@@ -88,13 +91,13 @@
 				echo "<br>";
 			}
 			?>
-			<button type="submit" value="Submit">Submit</button><br><br>
+			<button type="submit" name="submit" value="Submit">Submit</button><br><br>
 			<button type="reset" value="Reset">Clear</button>
-
+			<button class="back" name="back">Back</button>
 		</form>
 
 
-		<button class="back" onclick="window.location.href = 'Subject_Page.php';" value="Back">Back</button>
+
 	</div>
 
 </body>

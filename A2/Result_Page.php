@@ -17,6 +17,8 @@ $overallScore = $_SESSION['OverallScore'];
 $attempt = $_SESSION['Attempted'];
 $_SESSION['OverallScore'] = $overallScore;
 echo "<h1>Test Results</h1>";
+echo "<h4>Wrong answer = -1 points</h4>";
+echo "<h4>Correct answer = +2 points</h4>";
 echo "<h3>You just attempted a $attempt test</h3>";
 echo "<h3>You got $correct correct</h3>";
 echo "<h3>You got $wrong wrong</h3>";

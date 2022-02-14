@@ -39,6 +39,7 @@
 		<form id='Maths_Page' method='POST'>
 			<?php
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				if(isset($_POST['submit'])){
 				$Answer = $_POST['ans'];
 
 				foreach ($Answer as $Questions => $Response) {
@@ -59,6 +60,11 @@
 				$_SESSION['OverallScore'] += $showpoints;
 				header("Location: Result_Page.php");
 			}
+			if(isset($_POST['back'])){
+				header("Location: Subject_Page.php");
+			}
+		}
+		
 			?>
 			<label>Enter your answer in the text field </label><br />
 			<?php
@@ -69,11 +75,10 @@
 				$counter++;
 			}
 			?>
-			<button type="submit" value="Submit">Submit</button><br><br>
+			<button type="submit" name = "submit" value="Submit">Submit</button><br><br>
 			<button type="reset" value="Reset">Clear</button>
-
+			<button class = "back" name = "back">Back</button>
 		</form>
-		<button class="back" onclick="window.location.href = 'Subject_Page.php';">Back</button>
 
 	</div>
 </body>
