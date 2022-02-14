@@ -11,6 +11,7 @@
 	<div class="small-container">
 		<?php
 		session_start();
+		$_SESSION['currentScore'] = 0;
 		$HistoryQuestions = array(
 			1 => array("Qns" => "Whose death sparked World War I", "Ans" => "Archduke Franz Ferdinand"),
 			2 => array("Qns" => "In which city would you find the Statue of Liberty", "Ans" => "New York City"),
@@ -35,55 +36,47 @@
 			return $total;
 		}
 
-		$wrong = 0;
+		$wrong = 3;
 		$correct = 0;
 		$counter = 1;
 		$showpoints = 0;
-		$_SESSION["historyscore"] = 0;
+		?>
 
-		if (isset($_POST['submit'])) {
+		<form id='History_Page' method='POST'>
+			<?php
 
-			for ($i = 0; $i < 3; $i++) {
-				$keyI = $RandomKey[$i];
-				echo $_POST["ans[$keyI]"];
-				if (isset($_POST["ans[$keyI]"])) {
-					//echo $AnswerCheck;
-					for ($j = 1; $j < 7; $j++) {
-						if (strcasecmp($HistoryQuestions[$RandomKey[$j]]["Ans"], $_POST["ans[$keyI]"]) == 0) {
-							echo "<label>Correct!is " . $HistoryQuestions[$RandomKey[$j]] . ".</label><br /><br />\n";
-							$correct++;
-						} else {
-							echo "<label>Sorry, Incorrect Answer.</label><br /><br />\n";
-							//echo $Response;
-							$wrong++;
-						}
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+				$Answer = $_POST['ans'];
+				foreach ($Answer as $Questions => $Response) {
+					$Response = stripslashes($Response);
+
+					if (strcasecmp($HistoryQuestions[$Questions]["Ans"], $Response) == 0) {
+						$correct++;
+						$wrong--;
 					}
-				} else {
-					echo "<label>You did not attempt.</label><br /><br />\n";
 				}
-			}
 
-			//points for current attempt
-			$showpoints = calculatepoints($correct, $wrong);
-			if ($showpoints > 0) {
-				if (empty($_SESSION["historyscore"])) {
-					$_SESSION["historycore"] = $showpoints;
-				} elseif ($showpoints > $_SESSION["historyscore"]) {
-					$_SESSION["historycore"] = $showpoints;
-				}
+				//points for current attempt
+				$showpoints = calculatepoints($correct, $wrong);
+				$_SESSION['currentScore'] = $showpoints;
+				$_SESSION['Correct'] = $correct;
+				$_SESSION['Wrong'] = $wrong;
+				$_SESSION['HisAttempt'] += 1;
+				$_SESSION['Attempted'] = "History";
+				$_SESSION['OverallScore'] += $showpoints;
+				header("Location: Result_Page.php");
 			}
-			echo "<h1>You scored $showpoints/6</h1>";
-			echo "<button style='display:block;  margin-left:auto; margin-right:auto; background-color: #329EAA; border-radius:8px; border: none; color: white; padding: 5px 15px 8px 15px; text-align: center; text-decoration: none; font-size: 16px;'><a  href='Subject_Page.php'>Select Another Quiz</a></button>&nbsp;";
-			echo "<button style='display:block; margin-left:auto; margin-right:auto; background-color: #329EAA; border-radius:8px; border: none; color: white; padding: 5px 15px 8px 15px; text-align: center; text-decoration: none; font-size: 16px;'><a  href='Maths_Page.php'>Re-attempt Quiz</a></button>";
-		} else {
-			echo "<label>Please select the correct answer </label><br/>";
+			?>
+			<label>Please select the correct answer</label><br>
 
-			echo "<form action='History_Page.php' method='POST' autocomplete='off'>\n";
+			<?php
+
 			$counter = 1;
 			for ($i = 0; $i < 3; $i++) {
 				echo "<label class='question-text'>$counter. ";
 				$key = $RandomKey[$i];
-				
+
 				echo $HistoryQuestions[$key]["Qns"], "<br><br>";
 				$counter++;
 				for ($j = 0; $j < 3; $j++) {
@@ -93,17 +86,18 @@
 				}
 
 				echo "<br>";
-
 			}
-		}
+			?>
+			<button type="submit" value="Submit">Submit</button><br><br>
+			<button type="reset" value="Reset">Clear</button>
 
-		echo "<input type='submit' name='submit' value='Submit Answers' style='background-color: #329EAA; border-radius:8px; border: none; color: white; padding: 5px 15px 8px 15px; text-align: center; text-decoration: none; display:block; font-size: 16px;' />&nbsp";
-		echo "<input type='reset' name='reset' value='Clear' style='background-color: #329EAA; border-radius:8px; border: none; color: white; padding: 5px 15px 8px 15px; text-align: center; text-decoration: none; display:block; font-size: 16px;' />\n";
-		echo "</form>\n";
+		</form>
 
-		?>
+
+		<button class="back" onclick="window.location.href = 'Subject_Page.php';" value="Back">Back</button>
 	</div>
-	<button style="background-color: #329EAA; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display:block; font-size: 16px; margin-left:auto; margin-right: auto;"><a href="Subject_Page.php">Back</a></button>
+
 </body>
+
 
 </html>
