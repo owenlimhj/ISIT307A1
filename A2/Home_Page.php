@@ -27,7 +27,7 @@
 					$_SESSION['HisAttempt'] = 0;
 					$_SESSION['MathAttempt'] = 0;
 					$_SESSION['TotalWrong'] = 0;
-					$_SESSION['TOtalCorrect'] = 0;
+					$_SESSION['TotalCorrect'] = 0;
 					$_SESSION['Attempted'] = "";
 					header("Location: Subject_Page.php");
 				}
