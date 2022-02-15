@@ -36,7 +36,7 @@
 			?>
 			<label style="font-weight: bold;">
 				Student Number:
-				<input type="text" name="StudentNum" class="input-field" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+				<input type="text" name="StudentNum" class="input-field" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off"/>
 				<button class="smallbluebtn" type="submit">Start</button>
 			</label>
 		</form>

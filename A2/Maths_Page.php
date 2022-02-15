@@ -76,7 +76,7 @@
 				echo "$RandomQuestions[$i].</label>";
 				$counter++;
 			?>
-				<input type='text' class='input-field-quiz' name='<?php echo "ans[$RandomQuestions[$i]]" ?> ' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" /><br><br>
+				<input type='text' class='input-field-quiz' name='<?php echo "ans[$RandomQuestions[$i]]" ?> ' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off" /><br><br>
 			<?php
 
 
