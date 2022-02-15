@@ -39,47 +39,52 @@
 		<form id='Maths_Page' method='POST'>
 			<?php
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-				if(isset($_POST['submit'])){
-				$Answer = $_POST['ans'];
+				if (isset($_POST['submit'])) {
+					$Answer = $_POST['ans'];
 
-				foreach ($Answer as $Questions => $Response) {
-					$Response = stripslashes($Response);
-					//check length of response string
-					if (strcasecmp($MathQuestions["$Questions"], $Response) == 0) {
-						$correct++;
-						$wrong--;
+					foreach ($Answer as $Questions => $Response) {
+						$Response = stripslashes($Response);
+						//check length of response string
+						if (strcasecmp($MathQuestions["$Questions"], $Response) == 0) {
+							$correct++;
+							$wrong--;
+						}
 					}
+					//points for current attempt
+					$showpoints = calculatepoints($correct, $wrong);
+					$_SESSION["currentScore"] = $showpoints;
+					$_SESSION['Correct'] = $correct;
+					$_SESSION['Wrong'] = $wrong;
+					$_SESSION['MathAttempt'] += 1;
+					$_SESSION['Attempted'] = "Math";
+					$_SESSION['TotalCorrect'] += $correct;
+					$_SESSION['TotalWrong'] += $wrong;
+					$_SESSION['OverallScore'] += $showpoints;
+					header("Location: Result_Page.php");
 				}
-				//points for current attempt
-				$showpoints = calculatepoints($correct, $wrong);
-				$_SESSION["currentScore"] = $showpoints;
-				$_SESSION['Correct'] = $correct;
-				$_SESSION['Wrong'] = $wrong;
-				$_SESSION['MathAttempt'] += 1;
-				$_SESSION['Attempted'] = "Math";
-				$_SESSION['TotalCorrect'] += $correct;
-				$_SESSION['TotalWrong'] += $wrong;
-				$_SESSION['OverallScore'] += $showpoints;
-				header("Location: Result_Page.php");
+				if (isset($_POST['back'])) {
+					header("Location: Subject_Page.php");
+				}
 			}
-			if(isset($_POST['back'])){
-				header("Location: Subject_Page.php");
-			}
-		}
-		
+
 			?>
 			<label>Enter your answer in the text field </label><br />
 			<?php
 			for ($i = 0; $i < 3; $i++) {
+
 				echo "<label class='question-text'>$counter. ";
 				echo "$RandomQuestions[$i].</label>";
-				echo "<input type='text' class='input-field-quiz' name='ans[$RandomQuestions[$i]]' /><br /><br />";
 				$counter++;
+			?>
+				<input type='text' class='input-field-quiz' name='<?php echo "ans[$RandomQuestions[$i]]" ?> ' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" /><br><br>
+			<?php
+
+
 			}
 			?>
-			<button type="submit" name = "submit" value="Submit">Submit</button><br><br>
+			<button type="submit" name="submit" value="Submit">Submit</button><br><br>
 			<button type="reset" value="Reset">Clear</button>
-			<button class = "back" name = "back">Back</button>
+			<button class="back" name="back">Back</button>
 		</form>
 
 	</div>
